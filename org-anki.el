@@ -87,7 +87,7 @@ property"
   :type 'boolean
   :group 'org-anki)
 
-(defcustom org-anki-media-path "~/Anki/User 1/collection.media/"
+(defcustom org-anki-media-dir "~/Anki/User 1/collection.media"
   "Inherit tags, set to nil to turn off."
   :type '(string)
   :group 'org-anki)
@@ -675,13 +675,13 @@ Pandoc is required to be installed."
 
 (defun org-anki--add-prefix(node)
   (let* ((path (org-ml-get-property :path node))
-		 (new-path (concat org-anki--media-path path))) ;; fix this
+		 (new-path (concat org-anki-media-dir path))) ;; fix this
 	(org-ml-set-property :path new-path node)))
 
 
 (defun org-anki--remove-prefix(node)
   (let* ((path (org-ml-get-property :path node))
-				  (new-path (string-remove-prefix org-anki--media-path path))) ;; fix this
+				  (new-path (string-remove-prefix org-anki-media-dir path))) ;; fix this
 			 (org-ml-set-property :path new-path node)))
 
 
