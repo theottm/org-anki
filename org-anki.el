@@ -87,6 +87,11 @@ property"
   :type 'boolean
   :group 'org-anki)
 
+(defcustom org-anki-media-path "~/Anki/User 1/collection.media/"
+  "Inherit tags, set to nil to turn off."
+  :type '(string)
+  :group 'org-anki)
+
 ;; Stolen code
 
 ;; Get list of global properties
