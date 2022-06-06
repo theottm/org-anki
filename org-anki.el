@@ -36,6 +36,7 @@
 (require 'json)
 (require 'org)
 (require 'org-element)
+(require 'org-ml)
 (require 'promise)
 (require 'request)
 (require 'thunk)
@@ -667,11 +668,25 @@ Pandoc is required to be installed."
 
 (defun org-anki--html-to-org (html)
   (if html
-      (replace-regexp-in-string
-       "\n+$" ""
-       (shell-command-to-string
-        (format "pandoc --wrap=none --from=html --to=org <<< '%s'" html)))
+	  (add-link-prefix
+       (replace-regexp-in-string
+		"\n+$" ""
+		(shell-command-to-string
+         (format "pandoc --wrap=none --from=html --to=org <<< '%s'" html))))
     ""))
+
+
+(defun add-link-prefix (org-string)
+  (->> (org-ml--from-string org-string)
+	   (org-ml-match-map '(:any * (:and link))
+		 (lambda (node)
+		   (let* ((path (org-ml-get-property :path node))
+				  (new-path (concat anki-org--media-path path))) ;; fix this
+			 (org-ml-set-property :path new-path node))))
+	   (org-ml-to-string)))
+
+(setq anki-org--media-path "~/anki2-docker-2.1.40/User 1/collection.media/")
+
 
 (defun org-anki--write-note (note)
   ;; Add title
