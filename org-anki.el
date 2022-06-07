@@ -87,6 +87,12 @@ property"
   :type 'boolean
   :group 'org-anki)
 
+(defcustom org-anki-skip-funktion nil
+  "Function used to skip tags.
+Should behave like org-agenda-skip-function."
+  :type '(function)
+  :group 'org-anki)
+
 (defcustom org-anki-media-dir "~/Anki/User 1/collection.media"
   "Inherit tags, set to nil to turn off."
   :type '(string)
@@ -546,7 +552,7 @@ ignored."
   (interactive)
   (with-current-buffer (or buffer (buffer-name))
     (org-anki--sync-notes
-     (org-map-entries 'org-anki--note-at-point (org-anki--get-match)))))
+     (org-map-entries 'org-anki--note-at-point (org-anki--get-match) nil 'org-anki-skip-function))))
 
 ;;;###autoload
 (defun org-anki-update-all (&optional buffer)
